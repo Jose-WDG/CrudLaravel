@@ -1,26 +1,7 @@
-<head>
-<link rel="stylesheet" href="css/app.css">
-<script src="js/app.js"></script>
-</head>
+@extends('clientes.layout')
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-<a class="navbar-brand" href="{{ route('clients.index') }}">LARAVEL</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>     
-      </ul>
-    </div>
-  </nav>
-  
+
+@section('conteudo')
   <div class="row">
    <div class="col-md-12 text-center">
      <h1>Lista de clientes</h1>
@@ -46,7 +27,17 @@
         <td><a href="{{ route('clients.show',$client->id) }}"> {{ $client->name }} </a></td>
           <td>{{$client->email}}</td>
           <td>{{$client->age}}</td>
-          <td></td>
+          <td>
+            <a href="{{ route('clients.edit',$client->id) }}" class="btn btn-warning"> editar</a>
+          </td>
+          <td>
+          <form action="{{ route('clients.destroy',$client->id)}}" method="POST">
+             
+              {{ csrf_field() }}
+              {{ method_field('DELETE') }}
+              <button type="submit" class="btn btn-danger" onclick=" return confirm('Tem certeza que deseja remover o cliente?')">Deletar</button>
+            </form>
+            
         </tr>
           
         @empty
@@ -56,3 +47,4 @@
     </table>
   <button type="button" class="btn btn-dark"><a href="{{ route('clients.create') }}" style="color:#fff;">Criar cliente</a></button>
 </div>
+@endsection

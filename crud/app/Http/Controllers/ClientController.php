@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\client;
 
 class ClientController extends Controller
 {
@@ -24,6 +25,7 @@ class ClientController extends Controller
      */
     public function create()
     {
+       
         return view('clientes.create');
     }
 
@@ -35,7 +37,16 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        echo 'Chegou no store';
+        $novo_cliente = new client;
+        $novo_cliente->name = $request->input('name');
+        $novo_cliente->email = $request->input('email');
+        $novo_cliente->age = $request->input('age');
+
+        $novo_cliente->save();
+        return redirect()->route('clients.index').'<script>alert("criado com sucesso")</script>';
+
+
+      
     }
 
     /**
@@ -58,7 +69,9 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cliente = \App\client::find($id);
+        return view('clientes.editar',compact('cliente'));
+        
     }
 
     /**
@@ -69,8 +82,15 @@ class ClientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+
+        $update_cliente = client::find($id);
+        $update_cliente->name = $request->input('name');
+        $update_cliente->email = $request->input('email');
+        $update_cliente->age = $request->input('age');
+
+        $update_cliente->save();
+        return redirect()->route('clients.index').'<script>alert("Editado com sucesso!")</script>';
     }
 
     /**
@@ -80,7 +100,9 @@ class ClientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {   
+        $delete_cliente = client::find($id);
+        $delete_cliente->delete();
+        return redirect()->route('clients.index');
     }
 }
